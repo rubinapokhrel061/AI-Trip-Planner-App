@@ -1,8 +1,10 @@
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { Colors } from "@/constants/Colors";
+import { useRouter } from "expo-router";
 
-export default function Login() {
+export default function Landing() {
+  const router = useRouter();
   return (
     <View>
       <View
@@ -13,7 +15,7 @@ export default function Login() {
         }}
       >
         <Image
-          source={require("./../assets/images/login.jpg")}
+          source={require("./../assets/images/landing.jpg")}
           style={{
             width: "100%",
             height: "100%",
@@ -26,7 +28,7 @@ export default function Login() {
         style={{
           height: "100%",
           marginTop: -20,
-          backgroundColor: "rgb(221, 229, 246)",
+          backgroundColor: "#e4f5f3",
           borderTopLeftRadius: 30,
           borderTopRightRadius: 30,
           padding: 20,
@@ -61,13 +63,18 @@ export default function Login() {
         </Text>
 
         <TouchableOpacity
+          onPress={() => {
+            console.log("Button pressed");
+            router.push("/auth/sign-in");
+          }}
           style={{
-            backgroundColor: Colors.primary,
+            backgroundColor: Colors.blue,
             paddingVertical: 15,
             paddingHorizontal: 30,
             borderRadius: 30,
             flexDirection: "row",
             marginTop: 30,
+            zIndex: 10,
           }}
         >
           <Text

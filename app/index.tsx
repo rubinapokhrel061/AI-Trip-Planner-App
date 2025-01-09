@@ -1,9 +1,9 @@
-import { StyleSheet, Text, View } from "react-native";
-import Login from "../components/Login";
+import { View } from "react-native";
+import Landing from "../components/Landing";
 const App = () => {
   return (
     <View>
-      <Login />
+      <Landing />
     </View>
   );
 };
