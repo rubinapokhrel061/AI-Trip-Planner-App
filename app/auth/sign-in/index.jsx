@@ -6,8 +6,9 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect } from "react";
 import { useNavigation, useRouter } from "expo-router";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { Colors } from "../../../constants/Colors";
 
 export default function SignIn() {
@@ -21,6 +22,23 @@ export default function SignIn() {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity
+        style={{}}
+        onPress={() => router.back()}
+        activeOpacity={1}
+      >
+        <Ionicons
+          name="arrow-back"
+          size={24}
+          style={{
+            backgroundColor: Colors.white,
+            paddingTop: 12,
+            paddingLeft: 12,
+          }}
+          color="black"
+        />
+      </TouchableOpacity>
+
       {/* Header Image Section */}
       <View style={styles.headerImageContainer}>
         <Image

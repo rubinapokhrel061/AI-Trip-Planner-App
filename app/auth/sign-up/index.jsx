@@ -9,6 +9,7 @@ import {
 import React, { useEffect, useCallback } from "react";
 import { useNavigation, useRouter } from "expo-router";
 import { Colors } from "../../../constants/Colors";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function SignUp() {
   const navigation = useNavigation();
@@ -21,6 +22,22 @@ export default function SignUp() {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity
+        style={{}}
+        onPress={() => router.back()}
+        activeOpacity={1}
+      >
+        <Ionicons
+          name="arrow-back"
+          size={24}
+          style={{
+            backgroundColor: Colors.white,
+            paddingTop: 12,
+            paddingLeft: 12,
+          }}
+          color="black"
+        />
+      </TouchableOpacity>
       {/* Header Image Section */}
       <View style={styles.headerImageContainer}>
         <Image
@@ -119,7 +136,7 @@ const styles = StyleSheet.create({
   },
   headerImageContainer: {
     width: "100%",
-    height: 250,
+    height: 230,
     backgroundColor: Colors.white,
   },
   headerImage: {
