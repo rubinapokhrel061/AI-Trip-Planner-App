@@ -5,21 +5,42 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  ToastAndroid,
 } from "react-native";
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigation, useRouter } from "expo-router";
 import { Colors } from "../../../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
+import { auth } from "../../../configs/FirebaseConfig";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 export default function SignUp() {
   const navigation = useNavigation();
   const router = useRouter();
+  const [fullName, setFullName] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
   useEffect(() => {
     navigation.setOptions({
       headerShown: false,
     });
   });
-
+  const OnCreateAccount = () => {
+    if (!email && !password && !fullName) {
+      ToastAndroid.show("Please enter all details", ToastAndroid.BOTTOM);
+    }
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log(user);
+        console.log("signup");
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+      });
+  };
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -39,13 +60,13 @@ export default function SignUp() {
         />
       </TouchableOpacity>
       {/* Header Image Section */}
-      <View style={styles.headerImageContainer}>
+      {/* <View style={styles.headerImageContainer}>
         <Image
           source={require("../../../assets/images/login-register.jpg")}
           style={styles.headerImage}
           resizeMode="contain"
         />
-      </View>
+      </View> */}
       <View
         style={{
           height: "100%",
@@ -63,12 +84,13 @@ export default function SignUp() {
         {/* Input Fields and Buttons */}
         <View style={styles.inputContainer}>
           <View style={styles.inputWrapper}>
-            <Text style={styles.label}>Number</Text>
+            <Text style={styles.label}>Full Name</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter your number"
-              keyboardType="number-pad"
-              accessibilityLabel="Phone number input"
+              placeholder="Enter your name"
+              keyboardType="default"
+              accessibilityLabel="Phone name input"
+              onChangeText={(value) => setFullName(value)}
             />
           </View>
 
@@ -80,6 +102,7 @@ export default function SignUp() {
               placeholder="Enter your email"
               keyboardType="email-address"
               accessibilityLabel="Email input"
+              onChangeText={(value) => setEmail(value)}
             />
           </View>
 
@@ -91,6 +114,7 @@ export default function SignUp() {
               secureTextEntry={true}
               placeholder="Enter password"
               accessibilityLabel="Password input"
+              onChangeText={(value) => setPassword(value)}
             />
           </View>
 
@@ -98,6 +122,7 @@ export default function SignUp() {
           <TouchableOpacity
             style={styles.signUpButton}
             accessibilityLabel="Sign Up Button"
+            onPress={OnCreateAccount}
           >
             <Text style={styles.signUpButtonText}>Sign Up</Text>
           </TouchableOpacity>

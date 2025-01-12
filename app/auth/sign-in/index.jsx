@@ -6,19 +6,41 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigation, useRouter } from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Colors } from "../../../constants/Colors";
+import { auth } from "../../../configs/FirebaseConfig";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 export default function SignIn() {
   const navigation = useNavigation();
   const router = useRouter();
+
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
   useEffect(() => {
     navigation.setOptions({
       headerShown: false,
     });
   });
+
+  const OnSignIn = () => {
+    if (!email && !password) {
+      ToastAndroid.show("Please enter all details", ToastAndroid.BOTTOM);
+    }
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log(user);
+        console.log("signIn");
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorMessage);
+      });
+  };
 
   return (
     <View style={styles.container}>
@@ -40,13 +62,13 @@ export default function SignIn() {
       </TouchableOpacity>
 
       {/* Header Image Section */}
-      <View style={styles.headerImageContainer}>
+      {/* <View style={styles.headerImageContainer}>
         <Image
           source={require("../../../assets/images/login-register.jpg")}
           style={styles.headerImage}
           resizeMode="contain"
         />
-      </View>
+      </View> */}
       <View
         style={{
           height: "100%",
@@ -70,6 +92,7 @@ export default function SignIn() {
               style={styles.input}
               placeholder="Enter your email"
               keyboardType="email-address"
+              onChangeText={(value) => setEmail(value)}
             />
           </View>
 
@@ -79,11 +102,12 @@ export default function SignIn() {
               style={styles.input}
               secureTextEntry={true}
               placeholder="Enter password"
+              onChangeText={(value) => setPassword(value)}
             />
           </View>
 
           {/* Sign In Button */}
-          <TouchableOpacity style={styles.signInButton}>
+          <TouchableOpacity style={styles.signInButton} onPress={OnSignIn}>
             <Text style={styles.signInButtonText}>Sign In</Text>
           </TouchableOpacity>
 
