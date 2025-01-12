@@ -34,10 +34,14 @@ export default function SignUp() {
         const user = userCredential.user;
         console.log(user);
         console.log("signup");
+        if (user) {
+          router.replace("/mytrip");
+        }
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        ToastAndroid.show(errorMessage, ToastAndroid.BOTTOM);
         console.log(errorCode, errorMessage);
       });
   };

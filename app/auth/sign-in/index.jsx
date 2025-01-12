@@ -33,7 +33,9 @@ export default function SignIn() {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log(user);
-        console.log("signIn");
+        if (user) {
+          router.replace("/mytrip");
+        }
       })
       .catch((error) => {
         const errorCode = error.code;
