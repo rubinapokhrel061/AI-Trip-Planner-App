@@ -19,7 +19,7 @@ import {
   selectBudgeOptions,
 } from "../../constants/Options";
 
-export default function SearchPlace() {
+export default function CreateTrip() {
   const navigation = useNavigation();
   const router = useRouter();
   const [travelType, setTravelType] = useState(SelectTravelesList[0]);
@@ -28,13 +28,13 @@ export default function SearchPlace() {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [place, setPlace] = useState("");
-
+  const [country, setCountry] = useState("");
   const { tripData, setTripData } = useContext(CreateTripContext);
   let totalNoOfdays;
+
   useEffect(() => {
     navigation.setOptions({
       headerShown: true,
-
       headerTitle: "Create Your New Trip",
       headerStyle: {
         backgroundColor: Colors.white,
@@ -57,14 +57,23 @@ export default function SearchPlace() {
       budget,
       startDate,
       endDate,
+      country,
     });
-  }, [place, travelType, budget, startDate, endDate]);
+  }, [place, travelType, budget, startDate, endDate, country]);
 
   const handleSubmit = () => {
     if (!place) {
       Toast.show({
         type: "error",
         text1: "Please enter a place",
+      });
+      return;
+    }
+
+    if (!country) {
+      Toast.show({
+        type: "error",
+        text1: "Please enter the country where the place is located",
       });
       return;
     }
@@ -84,6 +93,7 @@ export default function SearchPlace() {
       });
       return;
     }
+
     if (!endDate) {
       setEndDate(startDate);
     }
@@ -95,6 +105,7 @@ export default function SearchPlace() {
       });
       return;
     }
+
     if (startDate && endDate) {
       if (startDate.isSame(endDate, "days")) {
         totalNoOfdays = 1;
@@ -111,19 +122,22 @@ export default function SearchPlace() {
       startDate,
       endDate,
       totalNoOfDays: totalNoOfdays,
+      country,
     });
 
     Toast.show({
       type: "success",
-      text1: "Trip Data Stored Succssfully!",
+      text1: "Trip Data Stored Successfully!",
     });
     router.push("/review-trip");
   };
+
   console.log(tripData);
+
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContainer}>
       <View style={styles.inputWrapper}>
-        <Text style={styles.label}>Place :</Text>
+        <Text style={styles.label}>Place:</Text>
         <TextInput
           style={styles.input}
           placeholder="Enter your dream place"
@@ -133,7 +147,17 @@ export default function SearchPlace() {
       </View>
 
       <View style={styles.inputWrapper}>
-        <Text style={styles.label}>Choose your travelers :</Text>
+        <Text style={styles.label}>Country:</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="The country where the place is located"
+          value={country}
+          onChangeText={setCountry}
+        />
+      </View>
+
+      <View style={styles.inputWrapper}>
+        <Text style={styles.label}>Choose your travelers:</Text>
         <View style={styles.pickerContainer}>
           <Picker
             selectedValue={travelType}
@@ -152,7 +176,7 @@ export default function SearchPlace() {
       </View>
 
       <View style={styles.inputWrapper}>
-        <Text style={styles.label}>Select Dates :</Text>
+        <Text style={styles.label}>Select Dates:</Text>
         <CalendarPicker
           onDateChange={onDateChange}
           allowRangeSelection={true}
@@ -168,7 +192,7 @@ export default function SearchPlace() {
       </View>
 
       <View style={styles.inputWrapper}>
-        <Text style={styles.label}>Select Budget :</Text>
+        <Text style={styles.label}>Choose your budget:</Text>
         <View style={styles.pickerContainer}>
           <Picker
             selectedValue={budget}
