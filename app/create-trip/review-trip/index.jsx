@@ -1,13 +1,14 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import React, { useContext, useEffect } from "react";
-import { useNavigation } from "expo-router";
-import { CreateTripContext } from "../../context/CreateTripContext";
-import { Colors } from "../../constants/Colors";
+import { useNavigation, useRouter } from "expo-router";
+import { CreateTripContext } from "../../../context/CreateTripContext";
+import { Colors } from "../../../constants/Colors";
 import moment from "moment";
 
 export default function ReviewTrip() {
   const navigation = useNavigation();
   const { tripData } = useContext(CreateTripContext);
+  const router = useRouter();
 
   useEffect(() => {
     navigation.setOptions({
@@ -16,7 +17,9 @@ export default function ReviewTrip() {
       headerTitle: "",
     });
   }, []);
-
+  const handleContinueToBuild = () => {
+    router.push("/create-trip/build-trip");
+  };
   return (
     <View
       style={{
@@ -81,7 +84,7 @@ export default function ReviewTrip() {
         </View>
       </View>
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={handleContinueToBuild}>
         <Text style={styles.buttonText}>Continue to Build</Text>
       </TouchableOpacity>
     </View>

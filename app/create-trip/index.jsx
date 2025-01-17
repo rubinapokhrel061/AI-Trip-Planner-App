@@ -13,6 +13,7 @@ import { Colors } from "../../constants/Colors";
 import { Picker } from "@react-native-picker/picker";
 import moment from "moment";
 import Toast from "react-native-toast-message";
+
 import { CreateTripContext } from "../../context/CreateTripContext";
 import {
   SelectTravelesList,
@@ -30,7 +31,7 @@ export default function CreateTrip() {
   const [place, setPlace] = useState("");
   const [country, setCountry] = useState("");
   const { tripData, setTripData } = useContext(CreateTripContext);
-  let totalNoOfdays;
+  const [totalNoOfDays, setTotalNoOfDays] = useState(0);
 
   useEffect(() => {
     navigation.setOptions({
@@ -40,7 +41,7 @@ export default function CreateTrip() {
         backgroundColor: Colors.white,
       },
     });
-  }, [navigation]);
+  }, []);
 
   const onDateChange = (date, type) => {
     if (type === "START_DATE") {
@@ -51,15 +52,27 @@ export default function CreateTrip() {
   };
 
   useEffect(() => {
+    if (startDate && endDate) {
+      if (startDate.isSame(endDate, "day")) {
+        setTotalNoOfDays(1);
+      } else {
+        let days = endDate.diff(startDate, "days");
+        setTotalNoOfDays(days + 1);
+      }
+    }
+  }, [startDate, endDate]);
+
+  useEffect(() => {
     setTripData({
       place,
       travelType,
       budget,
       startDate,
       endDate,
+      totalNoOfDays,
       country,
     });
-  }, [place, travelType, budget, startDate, endDate, country]);
+  }, [place, travelType, budget, startDate, endDate, country, totalNoOfDays]);
 
   const handleSubmit = () => {
     if (!place) {
@@ -94,25 +107,16 @@ export default function CreateTrip() {
       return;
     }
 
-    if (!endDate) {
-      setEndDate(startDate);
-    }
-
     if (!startDate && !endDate) {
       Toast.show({
         type: "error",
-        text1: "Please select a date",
+        text1: "Please select a date range",
       });
       return;
     }
 
-    if (startDate && endDate) {
-      if (startDate.isSame(endDate, "days")) {
-        totalNoOfdays = 1;
-      } else {
-        let days = endDate.diff(startDate, "days");
-        totalNoOfdays = days + 1;
-      }
+    if (startDate && !endDate) {
+      setEndDate(startDate);
     }
 
     setTripData({
@@ -121,7 +125,7 @@ export default function CreateTrip() {
       budget,
       startDate,
       endDate,
-      totalNoOfDays: totalNoOfdays,
+      totalNoOfDays,
       country,
     });
 
@@ -129,10 +133,9 @@ export default function CreateTrip() {
       type: "success",
       text1: "Trip Data Stored Successfully!",
     });
-    router.push("/review-trip");
-  };
 
-  console.log(tripData);
+    router.push("/create-trip/review-trip");
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContainer}>
