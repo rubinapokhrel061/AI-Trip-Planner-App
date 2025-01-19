@@ -63,7 +63,8 @@ export default function ReviewTrip() {
           <Text style={styles.infoValue}>
             {moment(tripData?.startDate).format("DD MMM") +
               " To " +
-              moment(tripData?.endDate).format("DD MMM")}
+              moment(tripData?.endDate).format("DD MMM")}{" "}
+            ({tripData?.totalNoOfDays} days)
           </Text>
         </View>
       </View>

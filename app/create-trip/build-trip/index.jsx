@@ -28,6 +28,7 @@ export default function BuildTrip() {
 
     const FINAL_PROMPT = AI_PROMPT.replace("{place}", tripData.place)
       .replace("{country}", tripData.country)
+      .replace("{place}", tripData.place)
       .replace("{totalDays}", tripData.totalNoOfDays)
       .replace("{totalNights}", tripData.totalNoOfDays - 1)
       .replace("{traveler}", tripData?.travelType?.title)
