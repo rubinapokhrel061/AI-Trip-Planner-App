@@ -4,6 +4,7 @@ import {
   StyleSheet,
   ScrollView,
   ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Colors } from "../../constants/Colors";
@@ -12,9 +13,11 @@ import StartNewTripCard from "../../components/MyTrips/StartNewTripCard";
 import { auth, db } from "../../configs/FirebaseConfig";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import UserTripList from "../../components/MyTrips/UserTripList";
+import { useRouter } from "expo-router";
 
 export default function MyTrip() {
   const [userTrips, setUserTrips] = useState([]);
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const user = auth.currentUser;
   useEffect(() => {
@@ -40,7 +43,9 @@ export default function MyTrip() {
     <ScrollView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>My Trips</Text>
-        <Ionicons name="add-circle" size={33} color={Colors.blue} />
+        <TouchableOpacity onPress={() => router.push("/create-trip")}>
+          <Ionicons name="add-circle" size={33} color={Colors.blue} />
+        </TouchableOpacity>
       </View>
       {loading && (
         <>

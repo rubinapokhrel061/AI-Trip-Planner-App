@@ -13,6 +13,7 @@ import { Colors } from "../../../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { auth } from "../../../configs/FirebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 export default function SignUp() {
   const navigation = useNavigation();
@@ -20,6 +21,7 @@ export default function SignUp() {
   const [fullName, setFullName] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [] = useState();
   useEffect(() => {
     navigation.setOptions({
       headerShown: false,
@@ -44,6 +46,32 @@ export default function SignUp() {
         ToastAndroid.show(errorMessage, ToastAndroid.BOTTOM);
         console.log(errorCode, errorMessage);
       });
+  };
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId:
+        "502919445865-6g79f5pjclnlvdo5urb0cp0k1olp1fva.apps.googleusercontent.com",
+    });
+  }, []);
+
+  const onGoogleButtonPress = async () => {
+    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+
+    const signInResult = await GoogleSignin.signIn();
+
+    idToken = signInResult.data?.idToken;
+    if (!idToken) {
+      idToken = signInResult.idToken;
+    }
+    if (!idToken) {
+      throw new Error("No ID token found");
+    }
+
+    const googleCredential = auth.GoogleAuthProvider.credential(
+      signInResult.data.idToken
+    );
+
+    return auth().signInWithCredential(googleCredential);
   };
   return (
     <View style={styles.container}>
@@ -135,7 +163,12 @@ export default function SignUp() {
           <Text style={styles.orText}>Or</Text>
 
           {/* Google Sign Up Button */}
-          <TouchableOpacity style={styles.googleButton}>
+          <TouchableOpacity
+            style={styles.googleButton}
+            onPress={() => {
+              onGoogleButtonPress();
+            }}
+          >
             <View style={styles.googleIconContainer}>
               <Image
                 source={require("../../../assets/images/google.png")}

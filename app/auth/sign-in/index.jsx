@@ -13,6 +13,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { Colors } from "../../../constants/Colors";
 import { auth } from "../../../configs/FirebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 export default function SignIn() {
   const navigation = useNavigation();
@@ -44,7 +45,32 @@ export default function SignIn() {
         console.log(errorMessage);
       });
   };
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId:
+        "502919445865-6g79f5pjclnlvdo5urb0cp0k1olp1fva.apps.googleusercontent.com",
+    });
+  }, []);
 
+  const onGoogleButtonPress = async () => {
+    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+
+    const signInResult = await GoogleSignin.signIn();
+
+    idToken = signInResult.data?.idToken;
+    if (!idToken) {
+      idToken = signInResult.idToken;
+    }
+    if (!idToken) {
+      throw new Error("No ID token found");
+    }
+
+    const googleCredential = auth.GoogleAuthProvider.credential(
+      signInResult.data.idToken
+    );
+
+    return auth().signInWithCredential(googleCredential);
+  };
   return (
     <View style={styles.container}>
       <TouchableOpacity

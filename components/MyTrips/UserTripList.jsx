@@ -7,13 +7,13 @@ import UserTripCard from "./UserTripCard";
 export default function UserTripList({ userTrips }) {
   const LatestTrip = JSON.parse(userTrips[0].tripData);
   const tripPlan = JSON.parse(userTrips[0].tripPlan);
-  console.log(tripPlan?.travelPlan?.imageUrl);
+  console.log(tripPlan?.travelPlan);
   return (
     userTrips && (
       <View>
         <View style={{ marginTop: 20 }}>
           <Image
-            source={tripPlan?.travelPlan?.imageUrl}
+            source={{ uri: tripPlan?.travelPlan?.imageUrl }}
             style={{
               width: "100%",
               height: 240,
@@ -66,7 +66,12 @@ export default function UserTripList({ userTrips }) {
                 justifyContent: "center",
                 alignItems: "center",
               }}
-              onPress={""}
+              onPress={() =>
+                router.push({
+                  pathname: "/trip-details",
+                  params: { trip: userTrips[0] },
+                })
+              }
             >
               <Text
                 style={{
