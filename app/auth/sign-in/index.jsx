@@ -13,7 +13,6 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { Colors } from "../../../constants/Colors";
 import { auth } from "../../../configs/FirebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 export default function SignIn() {
   const navigation = useNavigation();
@@ -45,32 +44,7 @@ export default function SignIn() {
         console.log(errorMessage);
       });
   };
-  useEffect(() => {
-    GoogleSignin.configure({
-      webClientId:
-        "502919445865-6g79f5pjclnlvdo5urb0cp0k1olp1fva.apps.googleusercontent.com",
-    });
-  }, []);
 
-  const onGoogleButtonPress = async () => {
-    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-
-    const signInResult = await GoogleSignin.signIn();
-
-    idToken = signInResult.data?.idToken;
-    if (!idToken) {
-      idToken = signInResult.idToken;
-    }
-    if (!idToken) {
-      throw new Error("No ID token found");
-    }
-
-    const googleCredential = auth.GoogleAuthProvider.credential(
-      signInResult.data.idToken
-    );
-
-    return auth().signInWithCredential(googleCredential);
-  };
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -84,27 +58,16 @@ export default function SignIn() {
           style={{
             backgroundColor: Colors.white,
             paddingTop: 12,
-            paddingLeft: 12,
+            paddingLeft: 15,
           }}
           color="black"
         />
       </TouchableOpacity>
 
-      {/* Header Image Section */}
-      {/* <View style={styles.headerImageContainer}>
-        <Image
-          source={require("../../../assets/images/login-register.jpg")}
-          style={styles.headerImage}
-          resizeMode="contain"
-        />
-      </View> */}
       <View
         style={{
           height: "100%",
-          marginTop: -10,
-          backgroundColor: "#e4f5f3",
-          borderTopLeftRadius: 20,
-          borderTopRightRadius: 20,
+          backgroundColor: Colors.white,
         }}
       >
         {/* Title and Subtitle */}
@@ -140,21 +103,6 @@ export default function SignIn() {
             <Text style={styles.signInButtonText}>Sign In</Text>
           </TouchableOpacity>
 
-          {/* Or */}
-          <Text style={styles.orText}>Or</Text>
-
-          {/* Google Sign-In Button */}
-          <TouchableOpacity style={styles.googleButton}>
-            <View style={styles.googleIconContainer}>
-              <Image
-                source={require("../../../assets/images/google.png")}
-                style={styles.googleIcon}
-                resizeMode="contain"
-              />
-            </View>
-            <Text style={styles.googleButtonText}>Sign In with Google</Text>
-          </TouchableOpacity>
-
           {/* Sign Up */}
           <View style={styles.signUpContainer}>
             <Text style={styles.signUpText}>Don't have an account?</Text>
@@ -162,6 +110,13 @@ export default function SignIn() {
               <Text style={styles.signUpLink}>Sign Up</Text>
             </TouchableOpacity>
           </View>
+        </View>
+        <View style={styles.imageContainer}>
+          <Image
+            source={require("../../../assets/images/login-register.jpg")}
+            style={styles.image}
+            resizeMode="contain"
+          />
         </View>
       </View>
     </View>
@@ -227,40 +182,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: "center",
   },
-  orText: {
-    textAlign: "center",
-    margin: 12,
-    fontSize: 15,
-    fontFamily: "outfit-bold",
-  },
-  googleButton: {
-    padding: 10,
-    borderWidth: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: Colors.white,
-    borderColor: Colors.blue,
-    borderRadius: 15,
-  },
-  googleIconContainer: {
-    width: 37,
-    height: 37,
-    backgroundColor: Colors.blue,
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 10,
-    borderRadius: 15,
-  },
-  googleIcon: {
-    width: "100%",
-    height: "100%",
-  },
-  googleButtonText: {
-    fontFamily: "outfit",
-    fontSize: 20,
-    color: Colors.blue,
-  },
+
   signUpContainer: {
     flexDirection: "row",
     justifyContent: "center",
@@ -276,5 +198,14 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontFamily: "outfit",
     marginLeft: 4,
+  },
+  imageContainer: {
+    width: "100%",
+    height: 250,
+    backgroundColor: Colors.white,
+  },
+  image: {
+    width: "100%",
+    height: "100%",
   },
 });

@@ -13,7 +13,6 @@ import { Colors } from "../../../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { auth } from "../../../configs/FirebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 export default function SignUp() {
   const navigation = useNavigation();
@@ -21,7 +20,6 @@ export default function SignUp() {
   const [fullName, setFullName] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-  const [] = useState();
   useEffect(() => {
     navigation.setOptions({
       headerShown: false,
@@ -47,32 +45,6 @@ export default function SignUp() {
         console.log(errorCode, errorMessage);
       });
   };
-  useEffect(() => {
-    GoogleSignin.configure({
-      webClientId:
-        "502919445865-6g79f5pjclnlvdo5urb0cp0k1olp1fva.apps.googleusercontent.com",
-    });
-  }, []);
-
-  const onGoogleButtonPress = async () => {
-    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-
-    const signInResult = await GoogleSignin.signIn();
-
-    idToken = signInResult.data?.idToken;
-    if (!idToken) {
-      idToken = signInResult.idToken;
-    }
-    if (!idToken) {
-      throw new Error("No ID token found");
-    }
-
-    const googleCredential = auth.GoogleAuthProvider.credential(
-      signInResult.data.idToken
-    );
-
-    return auth().signInWithCredential(googleCredential);
-  };
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -86,26 +58,16 @@ export default function SignUp() {
           style={{
             backgroundColor: Colors.white,
             paddingTop: 12,
-            paddingLeft: 12,
+            paddingLeft: 14,
           }}
           color="black"
         />
       </TouchableOpacity>
-      {/* Header Image Section */}
-      {/* <View style={styles.headerImageContainer}>
-        <Image
-          source={require("../../../assets/images/login-register.jpg")}
-          style={styles.headerImage}
-          resizeMode="contain"
-        />
-      </View> */}
+
       <View
         style={{
           height: "100%",
-          marginTop: -10,
-          backgroundColor: "#e4f5f3",
-          borderTopLeftRadius: 20,
-          borderTopRightRadius: 20,
+          backgroundColor: Colors.white,
         }}
       >
         {/* Title Section */}
@@ -159,26 +121,6 @@ export default function SignUp() {
             <Text style={styles.signUpButtonText}>Sign Up</Text>
           </TouchableOpacity>
 
-          {/* "Or"  */}
-          <Text style={styles.orText}>Or</Text>
-
-          {/* Google Sign Up Button */}
-          <TouchableOpacity
-            style={styles.googleButton}
-            onPress={() => {
-              onGoogleButtonPress();
-            }}
-          >
-            <View style={styles.googleIconContainer}>
-              <Image
-                source={require("../../../assets/images/google.png")}
-                style={styles.googleIcon}
-                resizeMode="contain"
-              />
-            </View>
-            <Text style={styles.googleButtonText}>Sign up with Google</Text>
-          </TouchableOpacity>
-
           {/* Sign In */}
           <View style={styles.signInContainer}>
             <Text style={styles.signInText}>Already have an account?</Text>
@@ -186,6 +128,13 @@ export default function SignUp() {
               <Text style={styles.signInLink}>Sign In</Text>
             </TouchableOpacity>
           </View>
+        </View>
+        <View style={styles.imageContainer}>
+          <Image
+            source={require("../../../assets/images/login-register.jpg")}
+            style={styles.image}
+            resizeMode="contain"
+          />
         </View>
       </View>
     </View>
@@ -196,15 +145,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  headerImageContainer: {
-    width: "100%",
-    height: 230,
-    backgroundColor: Colors.white,
-  },
-  headerImage: {
-    width: "100%",
-    height: "100%",
-  },
+
   textContainer: {
     paddingTop: 25,
     paddingHorizontal: 25,
@@ -244,40 +185,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: "center",
   },
-  orText: {
-    textAlign: "center",
-    margin: 12,
-    fontSize: 15,
-    fontFamily: "outfit-bold",
-  },
-  googleButton: {
-    padding: 10,
-    borderWidth: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: Colors.white,
-    borderColor: Colors.blue,
-    borderRadius: 15,
-  },
-  googleIconContainer: {
-    width: 38,
-    height: 38,
-    backgroundColor: Colors.blue,
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 8,
-    borderRadius: 15,
-  },
-  googleIcon: {
-    width: "100%",
-    height: "100%",
-  },
-  googleButtonText: {
-    fontFamily: "outfit",
-    fontSize: 20,
-    color: Colors.blue,
-  },
+
   signInContainer: {
     flexDirection: "row",
     justifyContent: "center",
@@ -293,5 +201,14 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontFamily: "outfit",
     marginLeft: 4,
+  },
+  imageContainer: {
+    width: "100%",
+    height: 250,
+    backgroundColor: Colors.white,
+  },
+  image: {
+    width: "100%",
+    height: "100%",
   },
 });

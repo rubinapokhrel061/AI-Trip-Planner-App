@@ -1,93 +1,94 @@
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import moment from "moment";
 import { Colors } from "../../constants/Colors";
 import UserTripCard from "./UserTripCard";
+import { useRouter } from "expo-router";
 
 export default function UserTripList({ userTrips }) {
+  const router = useRouter();
   const LatestTrip = JSON.parse(userTrips[0].tripData);
   const tripPlan = JSON.parse(userTrips[0].tripPlan);
-  console.log(tripPlan?.travelPlan);
+
   return (
     userTrips && (
-      <View>
-        <View style={{ marginTop: 20 }}>
-          <Image
-            source={{ uri: tripPlan?.travelPlan?.imageUrl }}
+      <View style={{ paddingHorizontal: 15, marginTop: 20 }}>
+        <View style={{ marginBottom: 20 }}>
+          <Text
             style={{
-              width: "100%",
-              height: 240,
-              objectFit: "cover",
-              borderRadius: 15,
+              fontFamily: "outfit-medium",
+              fontSize: 24,
+              fontWeight: "bold",
+              color: Colors.primary,
             }}
-          />
-          <View style={{ marginTop: 10 }}>
+          >
+            {tripPlan?.travelPlan?.location}
+          </Text>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              marginTop: 10,
+            }}
+          >
             <Text
               style={{
-                fontFamily: "outfit-medium",
-                fontSize: 24,
+                fontFamily: "outfit",
+                fontSize: 17,
+                color: Colors.gray,
               }}
             >
-              {tripPlan?.travelPlan?.location}
+              {moment(LatestTrip?.startDate).format("DD MMM yyyy")}
             </Text>
-            <View
+            <Text
               style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                marginTop: 5,
+                fontFamily: "outfit",
+                fontSize: 17,
+                color: Colors.gray,
               }}
             >
-              <Text
-                style={{
-                  fontFamily: "outfit",
-                  fontSize: 17,
-                  color: Colors.gray,
-                }}
-              >
-                {moment(LatestTrip?.startDate).format("DD MMM yyyy")}
-              </Text>
-              <Text
-                style={{
-                  fontFamily: "outfit",
-                  fontSize: 17,
-                  color: Colors.gray,
-                }}
-              >
-                ✈️{LatestTrip?.travelType?.title}
-              </Text>
-            </View>
-            <TouchableOpacity
-              style={{
-                backgroundColor: Colors.blue,
-                padding: 15,
-                marginTop: 20,
-                borderRadius: 15,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-              onPress={() =>
-                router.push({
-                  pathname: "/trip-details",
-                  params: { trip: userTrips[0] },
-                })
-              }
-            >
-              <Text
-                style={{
-                  color: Colors.white,
-                  fontFamily: "outfit",
-                  fontSize: 18,
-                }}
-              >
-                See Your Plan
-              </Text>
-            </TouchableOpacity>
+              ✈️ {LatestTrip?.travelType?.title}
+            </Text>
           </View>
-          {userTrips.map((trip, index) => (
-            <UserTripCard trip={trip} key={index} />
-          ))}
+
+          <TouchableOpacity
+            style={{
+              backgroundColor: Colors.blue,
+              paddingVertical: 15,
+              paddingHorizontal: 25,
+              marginTop: 20,
+              borderRadius: 25,
+              justifyContent: "center",
+              alignItems: "center",
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.3,
+              shadowRadius: 4,
+            }}
+            onPress={() =>
+              router.push({
+                pathname: "/trip-details",
+                params: { trip: userTrips[0] },
+              })
+            }
+          >
+            <Text
+              style={{
+                color: Colors.white,
+                fontFamily: "outfit",
+                fontSize: 18,
+                fontWeight: "600",
+              }}
+            >
+              See Your Plan
+            </Text>
+          </TouchableOpacity>
         </View>
+
+        {userTrips.map((trip, index) => (
+          <UserTripCard trip={trip} key={index} />
+        ))}
       </View>
     )
   );
