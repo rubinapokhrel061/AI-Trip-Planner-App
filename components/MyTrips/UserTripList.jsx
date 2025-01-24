@@ -9,21 +9,31 @@ export default function UserTripList({ userTrips }) {
   const router = useRouter();
   const LatestTrip = JSON.parse(userTrips[0].tripData);
   const tripPlan = JSON.parse(userTrips[0].tripPlan);
-
+  console.log("usertriopd", userTrips[0]);
   return (
     userTrips && (
-      <View style={{ paddingHorizontal: 15, marginTop: 20 }}>
-        <View style={{ marginBottom: 20 }}>
+      <View style={{ marginTop: 20 }}>
+        {/* Trip Overview */}
+        <View
+          style={{
+            marginBottom: 20,
+            borderBottomWidth: 1,
+            borderBottomColor: Colors.lightGray,
+            paddingBottom: 20,
+          }}
+        >
           <Text
             style={{
               fontFamily: "outfit-medium",
-              fontSize: 24,
+              fontSize: 26,
               fontWeight: "bold",
               color: Colors.primary,
+              marginBottom: 8,
             }}
           >
             {tripPlan?.travelPlan?.location}
           </Text>
+
           <View
             style={{
               display: "flex",
@@ -35,16 +45,16 @@ export default function UserTripList({ userTrips }) {
             <Text
               style={{
                 fontFamily: "outfit",
-                fontSize: 17,
+                fontSize: 18,
                 color: Colors.gray,
               }}
             >
-              {moment(LatestTrip?.startDate).format("DD MMM yyyy")}
+              {moment(LatestTrip?.startDate).format("DD MMM YYYY")}
             </Text>
             <Text
               style={{
                 fontFamily: "outfit",
-                fontSize: 17,
+                fontSize: 18,
                 color: Colors.gray,
               }}
             >
@@ -52,24 +62,22 @@ export default function UserTripList({ userTrips }) {
             </Text>
           </View>
 
+          {/* Button */}
           <TouchableOpacity
             style={{
               backgroundColor: Colors.blue,
-              paddingVertical: 15,
-              paddingHorizontal: 25,
-              marginTop: 20,
-              borderRadius: 25,
+              paddingVertical: 16,
+              paddingHorizontal: 30,
+              marginTop: 25,
+              borderRadius: 30,
               justifyContent: "center",
               alignItems: "center",
               shadowColor: "#000",
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.3,
-              shadowRadius: 4,
             }}
             onPress={() =>
               router.push({
                 pathname: "/trip-details",
-                params: { trip: userTrips[0] },
+                params: { trip: JSON.stringify(userTrips[0]) },
               })
             }
           >
@@ -86,8 +94,21 @@ export default function UserTripList({ userTrips }) {
           </TouchableOpacity>
         </View>
 
+        {/* List of Trips */}
+        <Text
+          style={{
+            fontFamily: "outfit-medium",
+            fontSize: 20,
+            fontWeight: "bold",
+            color: Colors.blue,
+          }}
+        >
+          List of Trips:
+        </Text>
         {userTrips.map((trip, index) => (
-          <UserTripCard trip={trip} key={index} />
+          <>
+            <UserTripCard trip={trip} key={index} />
+          </>
         ))}
       </View>
     )

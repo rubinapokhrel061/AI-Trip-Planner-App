@@ -1,25 +1,24 @@
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import moment from "moment";
 import { Colors } from "../../constants/Colors";
+import { useRouter } from "expo-router";
 
-export default function UserTripCard({ trip }) {
+export default function UserTripCard({ trip, key }) {
   const tripData = JSON.parse(trip.tripData);
   const tripPlan = JSON.parse(trip.tripPlan);
-
+  console.log(trip);
+  const router = useRouter();
   return (
     <View
+      key={key}
       style={{
         marginVertical: 15,
-        padding: 20,
+        padding: 10,
         backgroundColor: Colors.white,
         borderRadius: 15,
         borderWidth: 1,
         borderColor: Colors.lightGray,
-        // shadowColor: "#000",
-        // shadowOffset: { width: 0, height: 2 },
-        // shadowOpacity: 0.1,
-        // shadowRadius: 5,
       }}
     >
       <Text
@@ -32,26 +31,67 @@ export default function UserTripCard({ trip }) {
       >
         {tripPlan?.travelPlan?.location}
       </Text>
-      <Text
+      <View
         style={{
-          fontFamily: "outfit",
-          fontSize: 14,
-          color: Colors.gray,
-          marginTop: 5,
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          gap: 10,
         }}
       >
-        {moment(tripData.startDate).format("DD MMM yyyy")}
-      </Text>
-      <Text
-        style={{
-          fontFamily: "outfit",
-          fontSize: 14,
-          color: Colors.gray,
-          marginTop: 3,
-        }}
-      >
-        Traveling: {tripData?.travelType.title}
-      </Text>
+        <View>
+          <Text
+            style={{
+              fontFamily: "outfit",
+              fontSize: 14,
+              color: Colors.gray,
+              marginTop: 5,
+            }}
+          >
+            {moment(tripData.startDate).format("DD MMM yyyy")}
+          </Text>
+          <Text
+            style={{
+              fontFamily: "outfit",
+              fontSize: 14,
+              color: Colors.gray,
+              marginTop: 3,
+            }}
+          >
+            Traveling : {tripData?.travelType.title}
+          </Text>
+        </View>
+        <View style={{ alignItems: "center", justifyContent: "center" }}>
+          <TouchableOpacity
+            style={{
+              backgroundColor: Colors.green,
+              paddingVertical: 8,
+              paddingHorizontal: 10,
+              borderRadius: 25,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            onPress={() =>
+              router.push({
+                pathname: "/trip-details",
+
+                params: { trip: JSON.stringify(trip) },
+              })
+            }
+          >
+            <Text
+              style={{
+                color: Colors.white,
+                fontFamily: "outfit",
+                fontSize: 12,
+                fontWeight: "600",
+              }}
+            >
+              View More
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 }
