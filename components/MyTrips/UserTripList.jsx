@@ -9,7 +9,7 @@ export default function UserTripList({ userTrips }) {
   const router = useRouter();
   const LatestTrip = JSON.parse(userTrips[0].tripData);
   const tripPlan = JSON.parse(userTrips[0].tripPlan);
-  console.log("usertriopd", userTrips[0]);
+
   return (
     userTrips && (
       <View style={{ marginTop: 20 }}>
@@ -107,7 +107,7 @@ export default function UserTripList({ userTrips }) {
         </Text>
         {userTrips.map((trip, index) => (
           <>
-            <UserTripCard trip={trip} key={index} />
+            <UserTripCard trip={trip} key={trip.id} />
           </>
         ))}
       </View>

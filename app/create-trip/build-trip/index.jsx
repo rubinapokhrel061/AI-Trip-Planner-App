@@ -48,6 +48,7 @@ export default function BuildTrip() {
             userEmail: user.email,
             tripPlan: response,
             tripData: JSON.stringify(tripData),
+            id: docId,
           });
 
           setTripData([]);

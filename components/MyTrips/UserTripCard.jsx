@@ -4,14 +4,13 @@ import moment from "moment";
 import { Colors } from "../../constants/Colors";
 import { useRouter } from "expo-router";
 
-export default function UserTripCard({ trip, key }) {
+export default function UserTripCard({ trip }) {
   const tripData = JSON.parse(trip.tripData);
   const tripPlan = JSON.parse(trip.tripPlan);
-  console.log(trip);
+
   const router = useRouter();
   return (
     <View
-      key={key}
       style={{
         marginVertical: 15,
         padding: 10,
