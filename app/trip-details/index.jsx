@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ScrollView, FlatList } from "react-native";
+import { View, Text, ScrollView, FlatList, Image } from "react-native";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import moment from "moment";
@@ -15,9 +15,6 @@ export default function TripDetails() {
       headerShown: true,
       headerTransparent: true,
       headerTitle: "Trip Details",
-      headerStyle: {
-        backgroundColor: Colors.white,
-      },
     });
 
     if (trip) {
@@ -45,27 +42,97 @@ export default function TripDetails() {
 
   const { tripData, tripPlan } = tripDetails;
 
-  const {
-    place,
-    travelType,
-    budget,
-    startDate,
-    endDate,
-    totalNoOfDays,
-    country,
-  } = JSON.parse(tripData);
+  const { travelType, budget, startDate, endDate } = JSON.parse(tripData);
 
-  const {
-    location,
-    duration,
-    travelers,
-    bestTimeToVisit,
-    flights,
-    hotels,
-    itinerary,
-    notes,
-  } = JSON.parse(tripPlan).travelPlan;
+  const { location, duration, itinerary, bestTimeToVisit, flights, hotels } =
+    JSON.parse(tripPlan).travelPlan;
+  const { notes } = JSON.parse(tripPlan);
+  const renderFlightItem = ({ item }) => (
+    <View
+      style={{
+        backgroundColor: Colors.cardBG,
+        borderRadius: 10,
+        padding: 15,
+        margin: 4,
+        width: 350,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 5,
+        elevation: 3,
+      }}
+    >
+      <Text
+        style={{
+          fontSize: 18,
+          fontWeight: "bold",
+          color: Colors.blue,
+          marginBottom: 10,
+        }}
+      >
+        {item.airline}
+      </Text>
+      <Text
+        style={{
+          fontFamily: "outfit",
+          fontSize: 15,
 
+          marginBottom: 5,
+          lineHeight: 20,
+        }}
+      >
+        <Text style={{ fontWeight: "bold" }}>Departure Airport: </Text>
+        {item?.departureAirport}
+      </Text>
+      <Text
+        style={{
+          fontFamily: "outfit",
+          fontSize: 15,
+
+          marginBottom: 5,
+          lineHeight: 20,
+        }}
+      >
+        <Text style={{ fontWeight: "bold" }}>Arrival Airport: </Text>
+        {item?.arrivalAirport}
+      </Text>
+      <Text
+        style={{
+          fontFamily: "outfit",
+          fontSize: 15,
+
+          marginBottom: 5,
+          lineHeight: 20,
+        }}
+      >
+        <Text style={{ fontWeight: "bold" }}>Departure Time: </Text>
+        {item?.departureTime}
+      </Text>
+      <Text
+        style={{
+          fontFamily: "outfit",
+          fontSize: 15,
+
+          marginBottom: 5,
+          lineHeight: 20,
+        }}
+      >
+        <Text style={{ fontWeight: "bold" }}>Arrival Time: </Text>
+        {item?.arrivalTime}
+      </Text>
+      <Text
+        style={{
+          fontSize: 16,
+          color: "#2ecc71",
+          marginVertical: 5,
+          textAlign: "justify",
+        }}
+      >
+        <Text style={{ fontWeight: "bold" }}>Flight Price: </Text>
+        {item?.flightPrice}
+      </Text>
+    </View>
+  );
   const renderHotelItem = ({ item }) => {
     const renderStars = (rating) => {
       let stars = [];
@@ -94,6 +161,7 @@ export default function TripDetails() {
           borderRadius: 10,
           padding: 15,
           margin: 4,
+          width: 280,
           shadowColor: "#000",
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.1,
@@ -101,185 +169,290 @@ export default function TripDetails() {
           elevation: 3,
         }}
       >
-        <Text style={{ fontSize: 18, fontWeight: "bold", color: "#3498db" }}>
+        <Text style={{ fontSize: 18, fontWeight: "bold", color: Colors.blue }}>
           {item.hotelName}
         </Text>
         <Text style={{ fontSize: 14, color: "#7f8c8d" }}>
           {item.hotelAddress}
         </Text>
-        <Text style={{ fontSize: 16, color: "#2ecc71", marginVertical: 5 }}>
-          {item.price} per night
+        <Text
+          style={{
+            fontSize: 16,
+            marginVertical: 8,
+            textAlign: "justify",
+          }}
+        >
+          {item.description}
         </Text>
+        <Text style={{ fontSize: 16, color: "#2ecc71", marginVertical: 5 }}>
+          {item.price}
+        </Text>
+
         <View style={{ flexDirection: "row", marginTop: 5 }}>
           {renderStars(item.rating)}
-          <Text style={{ fontSize: 14, color: "#7f8c8d", marginLeft: 5 }}>
-            ({item.rating}/5)
-          </Text>
+          <Text style={{ fontSize: 14, marginLeft: 5 }}>({item.rating}/5)</Text>
         </View>
       </View>
     );
   };
 
-  const renderFlightItem = ({ item }) => (
-    <View
-      style={{
-        backgroundColor: Colors.cardBG,
-        borderRadius: 10,
-        padding: 15,
-        margin: 4,
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 5,
-        elevation: 3,
-      }}
-    >
-      <Text style={{ fontSize: 18, fontWeight: "bold", color: "#3498db" }}>
-        {item.airline}
-      </Text>
-      <Text style={{ fontSize: 14, color: "#7f8c8d" }}>
-        Departure: {item.departureAirport}
-      </Text>
-      <Text style={{ fontSize: 14, color: "#7f8c8d" }}>
-        Arrival: {item.arrivalAirport}
-      </Text>
-      <Text style={{ fontSize: 16, color: "#2ecc71", marginVertical: 5 }}>
-        Price: {item.flightPrice}
-      </Text>
-    </View>
-  );
-
-  return (
-    <ScrollView style={{ flex: 1, backgroundColor: "#fff", padding: 20 }}>
-      <View
-        style={{
-          marginVertical: 30,
-          padding: 20,
-          marginTop: 50,
-          backgroundColor: Colors.cardBG,
-          borderRadius: 15,
-          shadowColor: "#000",
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.1,
-          shadowRadius: 5,
-          elevation: 3,
-        }}
-      >
+  const renderDayWisePlan = ({ item, index }) => {
+    return (
+      <View>
         <Text
           style={{
-            fontFamily: "outfit-medium",
-            fontSize: 26,
+            fontSize: 18,
             fontWeight: "bold",
-            color: Colors.primary,
-            marginBottom: 12,
-            textTransform: "capitalize",
+
+            marginBottom: 5,
+            color: Colors.gray,
           }}
         >
-          {location}
+          Day {index + 1} :
         </Text>
 
-        <View>
-          <Text
+        {item.map((event, idx) => (
+          <View
+            key={idx}
             style={{
-              fontFamily: "outfit",
-              fontSize: 18,
-              color: Colors.gray,
-              marginBottom: 8,
-              lineHeight: 24,
+              marginBottom: 15,
+              backgroundColor: "#f1f1f1",
+              borderRadius: 10,
+              padding: 15,
+              margin: 4,
+
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.1,
+              shadowRadius: 5,
+              elevation: 3,
             }}
           >
-            <Text style={{ fontWeight: "bold", color: Colors.darkGray }}>
-              Date:{" "}
+            <Text
+              style={{
+                fontSize: 16,
+                fontWeight: "bold",
+                color: Colors.blue,
+              }}
+            >
+              {event.placeName} - {event.time}
             </Text>
-            {formatDate(startDate)} - {formatDate(endDate)}
+            <Text
+              style={{
+                fontSize: 14,
+
+                marginVertical: 5,
+                textAlign: "justify",
+              }}
+            >
+              {event.placeDetails}
+            </Text>
+            <Text
+              style={{
+                fontSize: 14,
+
+                textAlign: "justify",
+              }}
+            >
+              <Text style={{ fontWeight: "bold" }}>Best Time to visit : </Text>
+              {event.bestTime}
+            </Text>
+            <Text
+              style={{
+                fontSize: 14,
+              }}
+            >
+              <Text style={{ fontWeight: "bold" }}>Travel Time : </Text>
+              {event.timeTravel}
+            </Text>
+            <Text
+              style={{
+                paddingTop: 5,
+                fontSize: 14,
+                color: "#2ecc71",
+              }}
+            >
+              <Text style={{ fontWeight: "bold" }}>Price : </Text> {event.price}
+            </Text>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  return (
+    <ScrollView>
+      <Image
+        source={require("../../assets/images/earth.png")}
+        style={{ width: "100%", height: 350, objectFit: "cover" }}
+      />
+      <View
+        style={{
+          padding: 15,
+          backgroundColor: Colors.white,
+          height: "100%",
+          marginTop: -30,
+          borderTopLeftRadius: 30,
+          borderTopRightRadius: 30,
+        }}
+      >
+        <View
+          style={{
+            paddingBottom: 20,
+            borderBottomWidth: 1,
+            paddingHorizontal: 2,
+            paddingTop: 10,
+            borderBottomColor: Colors.green,
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: "outfit-medium",
+              fontSize: 22,
+              fontWeight: "bold",
+              color: Colors.primary,
+              marginBottom: 12,
+              textTransform: "capitalize",
+            }}
+          >
+            {location}
           </Text>
 
-          <Text
-            style={{
-              fontFamily: "outfit",
-              fontSize: 18,
-              color: Colors.gray,
-              marginBottom: 8,
-              lineHeight: 24,
-            }}
-          >
-            <Text style={{ fontWeight: "bold", color: Colors.darkGray }}>
-              Duration:{" "}
-            </Text>
-            {duration}
-          </Text>
+          <View>
+            <Text
+              style={{
+                fontFamily: "outfit",
+                fontSize: 15,
 
-          <Text
-            style={{
-              fontFamily: "outfit",
-              fontSize: 18,
-              color: Colors.gray,
-              marginBottom: 8,
-              lineHeight: 24,
-            }}
-          >
-            <Text style={{ fontWeight: "bold", color: Colors.darkGray }}>
-              Travelers:{" "}
+                marginBottom: 5,
+                lineHeight: 20,
+              }}
+            >
+              <Text style={{ fontWeight: "bold", color: Colors.darkGray }}>
+                Date:{" "}
+              </Text>
+              {formatDate(startDate)} - {formatDate(endDate)}
             </Text>
-            {travelType.icon} {travelType.title} ({travelType.people} people)
-          </Text>
 
-          <Text
-            style={{
-              fontFamily: "outfit",
-              fontSize: 18,
-              color: Colors.gray,
-              marginBottom: 8,
-              lineHeight: 24,
-            }}
-          >
-            <Text style={{ fontWeight: "bold", color: Colors.darkGray }}>
-              Budget:{" "}
-            </Text>
-            {budget.icon} {budget.title}
-          </Text>
+            <Text
+              style={{
+                fontFamily: "outfit",
+                fontSize: 15,
 
-          <Text
-            style={{
-              fontFamily: "outfit",
-              fontSize: 18,
-              color: Colors.gray,
-              marginBottom: 8,
-              lineHeight: 24,
-            }}
-          >
-            <Text style={{ fontWeight: "bold", color: Colors.darkGray }}>
-              Best Time to Visit:{" "}
+                marginBottom: 5,
+                lineHeight: 20,
+              }}
+            >
+              <Text style={{ fontWeight: "bold", color: Colors.darkGray }}>
+                Duration:{" "}
+              </Text>
+              {duration}
             </Text>
-            {bestTimeToVisit}
-          </Text>
+
+            <Text
+              style={{
+                fontFamily: "outfit",
+                fontSize: 15,
+
+                marginBottom: 5,
+                lineHeight: 20,
+              }}
+            >
+              <Text style={{ fontWeight: "bold", color: Colors.darkGray }}>
+                Travelers:{" "}
+              </Text>
+              {travelType.icon} {travelType.title} ({travelType.people} people)
+            </Text>
+
+            <Text
+              style={{
+                fontFamily: "outfit",
+                fontSize: 15,
+
+                marginBottom: 5,
+                lineHeight: 20,
+              }}
+            >
+              <Text style={{ fontWeight: "bold", color: Colors.darkGray }}>
+                Budget:{" "}
+              </Text>
+              {budget.icon} {budget.title}
+            </Text>
+
+            <Text
+              style={{
+                fontFamily: "outfit",
+                fontSize: 15,
+
+                marginBottom: 5,
+                lineHeight: 20,
+              }}
+            >
+              <Text style={{ fontWeight: "bold", color: Colors.darkGray }}>
+                Best Time to Visit:
+              </Text>
+              {bestTimeToVisit}
+            </Text>
+          </View>
         </View>
-      </View>
+        <View style={{ marginVertical: 15, marginBottom: 20 }}>
+          <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 10 }}>
+            Flights Recommendation :
+          </Text>
+          <FlatList
+            data={[flights.details.exampleFlight]}
+            renderItem={renderFlightItem}
+            keyExtractor={(item, index) => index.toString()}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+          />
+        </View>
 
-      <View style={{ marginVertical: 15, marginBottom: 20 }}>
-        <Text style={{ fontSize: 22, fontWeight: "bold", marginBottom: 10 }}>
-          Flights :
-        </Text>
-        <FlatList
-          data={[flights.details.exampleFlight]}
-          renderItem={renderFlightItem}
-          keyExtractor={(item, index) => index.toString()}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-        />
-      </View>
+        <View style={{ marginVertical: 15, marginBottom: 20 }}>
+          <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 10 }}>
+            Hotels Recommendation :
+          </Text>
+          <FlatList
+            data={hotels}
+            renderItem={renderHotelItem}
+            keyExtractor={(item, index) => index.toString()}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+          />
+        </View>
+        <View style={{ marginVertical: 15, marginBottom: 20 }}>
+          <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 10 }}>
+            DayWise Plan Recommendation :
+          </Text>
 
-      <View style={{ marginVertical: 15, marginBottom: 20 }}>
-        <Text style={{ fontSize: 22, fontWeight: "bold", marginBottom: 10 }}>
-          Hotels :
-        </Text>
-        <FlatList
-          data={hotels}
-          renderItem={renderHotelItem}
-          keyExtractor={(item, index) => index.toString()}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-        />
+          <FlatList
+            data={Object.values(itinerary)}
+            renderItem={renderDayWisePlan}
+            keyExtractor={(item, index) => index.toString()}
+          />
+        </View>
+
+        <View style={{ marginBottom: 15, marginBottom: 20 }}>
+          <Text style={{ fontSize: 22, fontWeight: "bold", marginBottom: 10 }}>
+            Important Notes:
+          </Text>
+          {Object.entries(notes).map(([key, value], index) => (
+            <View key={index} style={{ marginBottom: 10 }}>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  fontSize: 16,
+                  color: Colors.blue,
+                  marginBottom: 5,
+                  textTransform: "capitalize",
+                }}
+              >
+                {key} :
+              </Text>
+              <Text style={{ fontSize: 14, lineHeight: 20 }}>{value}</Text>
+            </View>
+          ))}
+        </View>
       </View>
     </ScrollView>
   );
