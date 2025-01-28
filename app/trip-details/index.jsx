@@ -9,7 +9,7 @@ export default function TripDetails() {
   const navigation = useNavigation();
   const { trip } = useLocalSearchParams();
   const [tripDetails, setTripDetails] = useState(null);
-
+  console.log(trip);
   useEffect(() => {
     navigation.setOptions({
       headerShown: true,
@@ -193,7 +193,7 @@ export default function TripDetails() {
       </View>
     );
   };
-
+  console.log("trip", trip);
   return (
     <ScrollView>
       <Image
@@ -417,28 +417,31 @@ export default function TripDetails() {
             </View>
           ))}
         </View>
-
-        <View style={{ marginBottom: 15 }}>
-          <Text style={{ fontSize: 22, fontWeight: "bold", marginBottom: 10 }}>
-            Important Notes:
-          </Text>
-          {Object.entries(notes).map(([key, value], index) => (
-            <View key={index} style={{ marginBottom: 10 }}>
-              <Text
-                style={{
-                  fontWeight: "bold",
-                  fontSize: 16,
-                  color: Colors.blue,
-                  marginBottom: 5,
-                  textTransform: "capitalize",
-                }}
-              >
-                {key}:
-              </Text>
-              <Text style={{ fontSize: 14, lineHeight: 20 }}>{value}</Text>
-            </View>
-          ))}
-        </View>
+        {notes && (
+          <View style={{ marginBottom: 15 }}>
+            <Text
+              style={{ fontSize: 22, fontWeight: "bold", marginBottom: 10 }}
+            >
+              Important Notes:
+            </Text>
+            {Object.entries(notes).map(([key, value], index) => (
+              <View key={index} style={{ marginBottom: 10 }}>
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: 16,
+                    color: Colors.blue,
+                    marginBottom: 5,
+                    textTransform: "capitalize",
+                  }}
+                >
+                  {key}:
+                </Text>
+                <Text style={{ fontSize: 14, lineHeight: 20 }}>{value}</Text>
+              </View>
+            ))}
+          </View>
+        )}
       </View>
     </ScrollView>
   );

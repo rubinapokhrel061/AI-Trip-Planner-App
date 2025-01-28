@@ -13,6 +13,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { Colors } from "../../../constants/Colors";
 import { auth } from "../../../configs/FirebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import Toast from "react-native-toast-message";
 
 export default function SignIn() {
   const navigation = useNavigation();
@@ -28,7 +29,10 @@ export default function SignIn() {
 
   const OnSignIn = () => {
     if (!email && !password) {
-      ToastAndroid.show("Please enter all details", ToastAndroid.BOTTOM);
+      Toast.show({
+        type: "error",
+        text1: "Please enter all details",
+      });
     }
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -36,12 +40,21 @@ export default function SignIn() {
         console.log(user);
         if (user) {
           router.replace("/mytrip");
+          Toast.show({
+            type: "success",
+            text1: "User logged in successfully",
+            text2: "Welcome back!",
+          });
         }
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorMessage);
+        Toast.show({
+          type: "error",
+          text1: errorMessage,
+        });
       });
   };
 

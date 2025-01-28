@@ -105,9 +105,13 @@ export default function UserTripList({ userTrips, refresh }) {
         >
           List of Trips:
         </Text>
-        {userTrips.map((trip, index) => (
+        {userTrips.map((trip) => (
           <>
-            <UserTripCard trip={trip} key={trip.id} refresh={refresh} />
+            <UserTripCard
+              trip={trip}
+              key={trip.id || `${trip.tripData.startDate}-${Math.random()}`}
+              refresh={refresh}
+            />
           </>
         ))}
       </View>

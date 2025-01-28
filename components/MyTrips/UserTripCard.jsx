@@ -6,6 +6,7 @@ import { useRouter } from "expo-router";
 
 import { doc, deleteDoc } from "firebase/firestore";
 import { db } from "../../configs/FirebaseConfig";
+import Toast from "react-native-toast-message";
 export default function UserTripCard({ trip, refresh }) {
   const tripData = JSON.parse(trip.tripData);
   const tripPlan = JSON.parse(trip.tripPlan);
@@ -15,10 +16,17 @@ export default function UserTripCard({ trip, refresh }) {
   const handleDelete = async (id) => {
     try {
       await deleteDoc(doc(db, "UserTrips", id));
-      ToastAndroid.show("Trip deleted successfully", ToastAndroid.BOTTOM);
+
+      Toast.show({
+        type: "success",
+        text1: "Trip deleted successfully...",
+      });
       refresh();
     } catch (error) {
-      ToastAndroid.show("Error in deleting Trip..", ToastAndroid.BOTTOM);
+      Toast.show({
+        type: "error",
+        text1: "Error in deleting Trip...",
+      });
       console.log(error);
     }
   };

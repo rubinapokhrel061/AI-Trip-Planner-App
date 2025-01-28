@@ -27,7 +27,10 @@ export default function SignUp() {
   });
   const OnCreateAccount = () => {
     if (!email && !password && !fullName) {
-      ToastAndroid.show("Please enter all details", ToastAndroid.BOTTOM);
+      Toast.show({
+        type: "error",
+        text1: "Please enter all details",
+      });
     }
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -36,12 +39,20 @@ export default function SignUp() {
         console.log("signup");
         if (user) {
           router.replace("/mytrip");
+          Toast.show({
+            type: "success",
+            text1: "User signed up successfully",
+            text2: "Welcome back!",
+          });
         }
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        ToastAndroid.show(errorMessage, ToastAndroid.BOTTOM);
+        Toast.show({
+          type: "error",
+          text1: errorMessage,
+        });
         console.log(errorCode, errorMessage);
       });
   };

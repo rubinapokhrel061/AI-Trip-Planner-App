@@ -2,7 +2,7 @@ import React from "react";
 import { Tabs } from "expo-router";
 import { Colors } from "../../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
+
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 export default function TabLayout() {
@@ -22,15 +22,7 @@ export default function TabLayout() {
           ),
         }}
       />
-      <Tabs.Screen
-        name="discover"
-        options={{
-          tabBarLabel: "Discover",
-          tabBarIcon: ({ color }) => (
-            <FontAwesome name="globe" size={24} color={color} />
-          ),
-        }}
-      />
+
       <Tabs.Screen
         name="save"
         options={{
