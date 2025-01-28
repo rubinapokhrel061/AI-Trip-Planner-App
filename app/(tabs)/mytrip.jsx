@@ -38,7 +38,9 @@ export default function MyTrip() {
     });
     setLoading(false);
   };
-
+  const refreshTrips = async () => {
+    await GetMyTrips();
+  };
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
@@ -47,8 +49,15 @@ export default function MyTrip() {
           <Ionicons name="add-circle" size={33} color={Colors.blue} />
         </TouchableOpacity>
       </View>
-      {loading && (
-        <>
+      {loading ? (
+        <View
+          style={{
+            height: "100%",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 50,
+          }}
+        >
           <ActivityIndicator size="large" color={Colors.primary} />
           <Text
             style={{
@@ -60,13 +69,11 @@ export default function MyTrip() {
           >
             your trip...
           </Text>
-        </>
-      )}
-
-      {userTrips?.length === 0 ? (
+        </View>
+      ) : userTrips?.length === 0 ? (
         <StartNewTripCard />
       ) : (
-        <UserTripList userTrips={userTrips} />
+        <UserTripList userTrips={userTrips} refresh={refreshTrips} />
       )}
     </ScrollView>
   );

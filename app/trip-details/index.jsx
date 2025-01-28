@@ -35,7 +35,7 @@ export default function TripDetails() {
           backgroundColor: "#fff",
         }}
       >
-        No Data found
+        <Text>No Data found</Text>
       </View>
     );
   }
@@ -47,6 +47,7 @@ export default function TripDetails() {
   const { location, duration, itinerary, bestTimeToVisit, flights, hotels } =
     JSON.parse(tripPlan).travelPlan;
   const { notes } = JSON.parse(tripPlan);
+
   const renderFlightItem = ({ item }) => (
     <View
       style={{
@@ -76,7 +77,6 @@ export default function TripDetails() {
         style={{
           fontFamily: "outfit",
           fontSize: 15,
-
           marginBottom: 5,
           lineHeight: 20,
         }}
@@ -88,7 +88,6 @@ export default function TripDetails() {
         style={{
           fontFamily: "outfit",
           fontSize: 15,
-
           marginBottom: 5,
           lineHeight: 20,
         }}
@@ -100,7 +99,6 @@ export default function TripDetails() {
         style={{
           fontFamily: "outfit",
           fontSize: 15,
-
           marginBottom: 5,
           lineHeight: 20,
         }}
@@ -112,7 +110,6 @@ export default function TripDetails() {
         style={{
           fontFamily: "outfit",
           fontSize: 15,
-
           marginBottom: 5,
           lineHeight: 20,
         }}
@@ -133,6 +130,7 @@ export default function TripDetails() {
       </Text>
     </View>
   );
+
   const renderHotelItem = ({ item }) => {
     const renderStars = (rating) => {
       let stars = [];
@@ -196,90 +194,6 @@ export default function TripDetails() {
     );
   };
 
-  const renderDayWisePlan = ({ item, index }) => {
-    return (
-      <View>
-        <Text
-          style={{
-            fontSize: 18,
-            fontWeight: "bold",
-
-            marginBottom: 5,
-            color: Colors.gray,
-          }}
-        >
-          Day {index + 1} :
-        </Text>
-
-        {item.map((event, idx) => (
-          <View
-            key={idx}
-            style={{
-              marginBottom: 15,
-              backgroundColor: "#f1f1f1",
-              borderRadius: 10,
-              padding: 15,
-              margin: 4,
-
-              shadowColor: "#000",
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.1,
-              shadowRadius: 5,
-              elevation: 3,
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 16,
-                fontWeight: "bold",
-                color: Colors.blue,
-              }}
-            >
-              {event.placeName} - {event.time}
-            </Text>
-            <Text
-              style={{
-                fontSize: 14,
-
-                marginVertical: 5,
-                textAlign: "justify",
-              }}
-            >
-              {event.placeDetails}
-            </Text>
-            <Text
-              style={{
-                fontSize: 14,
-
-                textAlign: "justify",
-              }}
-            >
-              <Text style={{ fontWeight: "bold" }}>Best Time to visit : </Text>
-              {event.bestTime}
-            </Text>
-            <Text
-              style={{
-                fontSize: 14,
-              }}
-            >
-              <Text style={{ fontWeight: "bold" }}>Travel Time : </Text>
-              {event.timeTravel}
-            </Text>
-            <Text
-              style={{
-                paddingTop: 5,
-                fontSize: 14,
-                color: "#2ecc71",
-              }}
-            >
-              <Text style={{ fontWeight: "bold" }}>Price : </Text> {event.price}
-            </Text>
-          </View>
-        ))}
-      </View>
-    );
-  };
-
   return (
     <ScrollView>
       <Image
@@ -323,13 +237,12 @@ export default function TripDetails() {
               style={{
                 fontFamily: "outfit",
                 fontSize: 15,
-
                 marginBottom: 5,
                 lineHeight: 20,
               }}
             >
               <Text style={{ fontWeight: "bold", color: Colors.darkGray }}>
-                Date:{" "}
+                Date:
               </Text>
               {formatDate(startDate)} - {formatDate(endDate)}
             </Text>
@@ -338,13 +251,12 @@ export default function TripDetails() {
               style={{
                 fontFamily: "outfit",
                 fontSize: 15,
-
                 marginBottom: 5,
                 lineHeight: 20,
               }}
             >
               <Text style={{ fontWeight: "bold", color: Colors.darkGray }}>
-                Duration:{" "}
+                Duration:
               </Text>
               {duration}
             </Text>
@@ -353,13 +265,12 @@ export default function TripDetails() {
               style={{
                 fontFamily: "outfit",
                 fontSize: 15,
-
                 marginBottom: 5,
                 lineHeight: 20,
               }}
             >
               <Text style={{ fontWeight: "bold", color: Colors.darkGray }}>
-                Travelers:{" "}
+                Travelers:
               </Text>
               {travelType.icon} {travelType.title} ({travelType.people} people)
             </Text>
@@ -368,13 +279,12 @@ export default function TripDetails() {
               style={{
                 fontFamily: "outfit",
                 fontSize: 15,
-
                 marginBottom: 5,
                 lineHeight: 20,
               }}
             >
               <Text style={{ fontWeight: "bold", color: Colors.darkGray }}>
-                Budget:{" "}
+                Budget:
               </Text>
               {budget.icon} {budget.title}
             </Text>
@@ -383,7 +293,6 @@ export default function TripDetails() {
               style={{
                 fontFamily: "outfit",
                 fontSize: 15,
-
                 marginBottom: 5,
                 lineHeight: 20,
               }}
@@ -395,9 +304,10 @@ export default function TripDetails() {
             </Text>
           </View>
         </View>
+
         <View style={{ marginVertical: 15, marginBottom: 20 }}>
           <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 10 }}>
-            Flights Recommendation :
+            Flights Recommendation:
           </Text>
           <FlatList
             data={[flights.details.exampleFlight]}
@@ -410,7 +320,7 @@ export default function TripDetails() {
 
         <View style={{ marginVertical: 15, marginBottom: 20 }}>
           <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 10 }}>
-            Hotels Recommendation :
+            Hotels Recommendation:
           </Text>
           <FlatList
             data={hotels}
@@ -420,19 +330,95 @@ export default function TripDetails() {
             showsHorizontalScrollIndicator={false}
           />
         </View>
+
         <View style={{ marginVertical: 15, marginBottom: 20 }}>
           <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 10 }}>
-            DayWise Plan Recommendation :
+            DayWise Plan Recommendation:
           </Text>
 
-          <FlatList
-            data={Object.values(itinerary)}
-            renderItem={renderDayWisePlan}
-            keyExtractor={(item, index) => index.toString()}
-          />
+          {Object.values(itinerary).map((item, index) => (
+            <View key={index}>
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: "bold",
+                  marginBottom: 5,
+                  color: Colors.gray,
+                }}
+              >
+                Day {index + 1}:
+              </Text>
+
+              {item.map((event, idx) => (
+                <View
+                  key={idx}
+                  style={{
+                    marginBottom: 15,
+                    backgroundColor: "#f1f1f1",
+                    borderRadius: 10,
+                    padding: 15,
+                    margin: 4,
+                    shadowColor: "#000",
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.1,
+                    shadowRadius: 5,
+                    elevation: 3,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      fontWeight: "bold",
+                      color: Colors.blue,
+                    }}
+                  >
+                    {event.placeName} - {event.time}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      marginVertical: 5,
+                      textAlign: "justify",
+                    }}
+                  >
+                    {event.placeDetails}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      textAlign: "justify",
+                    }}
+                  >
+                    <Text style={{ fontWeight: "bold" }}>
+                      Best Time to visit:
+                    </Text>
+                    {event.bestTime}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                    }}
+                  >
+                    <Text style={{ fontWeight: "bold" }}>Travel Time: </Text>
+                    {event.timeTravel}
+                  </Text>
+                  <Text
+                    style={{
+                      paddingTop: 5,
+                      fontSize: 14,
+                      color: "#2ecc71",
+                    }}
+                  >
+                    <Text style={{ fontWeight: "bold" }}>Price: </Text>
+                    {event.price}
+                  </Text>
+                </View>
+              ))}
+            </View>
+          ))}
         </View>
 
-        <View style={{ marginBottom: 15, marginBottom: 20 }}>
+        <View style={{ marginBottom: 15 }}>
           <Text style={{ fontSize: 22, fontWeight: "bold", marginBottom: 10 }}>
             Important Notes:
           </Text>
@@ -447,7 +433,7 @@ export default function TripDetails() {
                   textTransform: "capitalize",
                 }}
               >
-                {key} :
+                {key}:
               </Text>
               <Text style={{ fontSize: 14, lineHeight: 20 }}>{value}</Text>
             </View>

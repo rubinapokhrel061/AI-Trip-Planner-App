@@ -5,14 +5,14 @@ import { Colors } from "../../constants/Colors";
 import UserTripCard from "./UserTripCard";
 import { useRouter } from "expo-router";
 
-export default function UserTripList({ userTrips }) {
+export default function UserTripList({ userTrips, refresh }) {
   const router = useRouter();
   const LatestTrip = JSON.parse(userTrips[0].tripData);
   const tripPlan = JSON.parse(userTrips[0].tripPlan);
 
   return (
     userTrips && (
-      <View style={{ marginTop: 20 }}>
+      <View style={{ marginTop: 20, marginBottom: 50 }}>
         {/* Trip Overview */}
         <View
           style={{
@@ -107,7 +107,7 @@ export default function UserTripList({ userTrips }) {
         </Text>
         {userTrips.map((trip, index) => (
           <>
-            <UserTripCard trip={trip} key={trip.id} />
+            <UserTripCard trip={trip} key={trip.id} refresh={refresh} />
           </>
         ))}
       </View>
