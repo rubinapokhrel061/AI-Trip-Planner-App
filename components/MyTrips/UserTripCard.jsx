@@ -130,7 +130,12 @@ export default function UserTripCard({ trip, refresh }) {
             alignItems: "center",
             justifyContent: "center",
           }}
-          onPress={() => ""}
+          onPress={() =>
+            router.push({
+              pathname: "/update-trip",
+              params: { trip: JSON.stringify(trip) },
+            })
+          }
         >
           <Text
             style={{

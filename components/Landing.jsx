@@ -2,7 +2,7 @@ import { View, Text, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { Colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
-
+import { MaterialIcons } from "@expo/vector-icons";
 export default function Landing() {
   const router = useRouter();
   return (
@@ -73,7 +73,7 @@ export default function Landing() {
             paddingHorizontal: 30,
             borderRadius: 30,
             flexDirection: "row",
-            marginTop: 30,
+            alignItems: "center",
             zIndex: 10,
           }}
         >
@@ -86,16 +86,12 @@ export default function Landing() {
           >
             Get Started
           </Text>
-          <Text
-            style={{
-              fontSize: 18,
-              fontFamily: "outfit-bold",
-              color: Colors.white,
-              marginLeft: 10,
-            }}
-          >
-            →
-          </Text>
+          <MaterialIcons
+            name="arrow-forward"
+            size={20}
+            color={Colors.white}
+            style={{ marginLeft: 10 }}
+          />
         </TouchableOpacity>
       </View>
     </View>

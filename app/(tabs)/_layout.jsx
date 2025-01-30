@@ -24,11 +24,11 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="save"
+        name="bookinglist"
         options={{
-          tabBarLabel: "Favroite Trip",
+          tabBarLabel: "Booking List",
           tabBarIcon: ({ color }) => (
-            <MaterialIcons name="favorite" size={24} color={color} />
+            <MaterialIcons name="flight-takeoff" size={24} color={color} />
           ),
         }}
       />

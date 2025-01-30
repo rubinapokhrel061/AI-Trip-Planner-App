@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ScrollView, FlatList, Image } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  FlatList,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import moment from "moment";
@@ -9,7 +16,7 @@ export default function TripDetails() {
   const navigation = useNavigation();
   const { trip } = useLocalSearchParams();
   const [tripDetails, setTripDetails] = useState(null);
-  console.log(trip);
+
   useEffect(() => {
     navigation.setOptions({
       headerShown: true,
@@ -44,92 +51,98 @@ export default function TripDetails() {
 
   const { travelType, budget, startDate, endDate } = JSON.parse(tripData);
 
-  const { location, duration, itinerary, bestTimeToVisit, flights, hotels } =
-    JSON.parse(tripPlan).travelPlan;
-  const { notes } = JSON.parse(tripPlan);
+  const {
+    location,
+    duration,
+    itinerary,
+    bestTimeToVisit,
+    flights,
+    hotels,
+    notes,
+  } = JSON.parse(tripPlan).travelPlan;
+  // const { notes } = JSON.parse(tripPlan);
+  console.log("notes", notes);
 
-  const renderFlightItem = ({ item }) => (
-    <View
-      style={{
-        backgroundColor: Colors.cardBG,
-        borderRadius: 10,
-        padding: 15,
-        margin: 4,
-        width: 350,
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 5,
-        elevation: 3,
-      }}
-    >
-      <Text
+  const renderFlightItem = ({ item }) => {
+ 
+    return (
+      <View
         style={{
-          fontSize: 18,
-          fontWeight: "bold",
-          color: Colors.blue,
-          marginBottom: 10,
+          backgroundColor: Colors.cardBG,
+          borderRadius: 10,
+          padding: 15,
+          margin: 4,
+          width: 350,
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.1,
+          shadowRadius: 5,
+          elevation: 3,
         }}
       >
-        {item.airline}
-      </Text>
-      <Text
-        style={{
-          fontFamily: "outfit",
-          fontSize: 15,
-          marginBottom: 5,
-          lineHeight: 20,
-        }}
-      >
-        <Text style={{ fontWeight: "bold" }}>Departure Airport: </Text>
-        {item?.departureAirport}
-      </Text>
-      <Text
-        style={{
-          fontFamily: "outfit",
-          fontSize: 15,
-          marginBottom: 5,
-          lineHeight: 20,
-        }}
-      >
-        <Text style={{ fontWeight: "bold" }}>Arrival Airport: </Text>
-        {item?.arrivalAirport}
-      </Text>
-      <Text
-        style={{
-          fontFamily: "outfit",
-          fontSize: 15,
-          marginBottom: 5,
-          lineHeight: 20,
-        }}
-      >
-        <Text style={{ fontWeight: "bold" }}>Departure Time: </Text>
-        {item?.departureTime}
-      </Text>
-      <Text
-        style={{
-          fontFamily: "outfit",
-          fontSize: 15,
-          marginBottom: 5,
-          lineHeight: 20,
-        }}
-      >
-        <Text style={{ fontWeight: "bold" }}>Arrival Time: </Text>
-        {item?.arrivalTime}
-      </Text>
-      <Text
-        style={{
-          fontSize: 16,
-          color: "#2ecc71",
-          marginVertical: 5,
-          textAlign: "justify",
-        }}
-      >
-        <Text style={{ fontWeight: "bold" }}>Flight Price: </Text>
-        {item?.flightPrice}
-      </Text>
-    </View>
-  );
+        <Text
+          style={{
+            fontSize: 18,
+            fontWeight: "bold",
+            color: Colors.blue,
+            marginBottom: 10,
+          }}
+        >
+          {item.airline}
+        </Text>
+        <Text style={{ fontFamily: "outfit", fontSize: 15, marginBottom: 5 }}>
+          <Text style={{ fontWeight: "bold" }}>Departure Airport: </Text>
+          {item?.departureAirport}
+        </Text>
+        <Text style={{ fontFamily: "outfit", fontSize: 15, marginBottom: 5 }}>
+          <Text style={{ fontWeight: "bold" }}>Arrival Airport: </Text>
+          {item?.arrivalAirport}
+        </Text>
+        <Text style={{ fontFamily: "outfit", fontSize: 15, marginBottom: 5 }}>
+          <Text style={{ fontWeight: "bold" }}>Departure Time: </Text>
+          {item?.departureTime}
+        </Text>
+        <Text style={{ fontFamily: "outfit", fontSize: 15, marginBottom: 5 }}>
+          <Text style={{ fontWeight: "bold" }}>Arrival Time: </Text>
+          {item?.arrivalTime}
+        </Text>
+        <Text
+          style={{
+            fontSize: 16,
+            color: "#2ecc71",
+            marginVertical: 5,
+            textAlign: "justify",
+          }}
+        >
+          <Text style={{ fontWeight: "bold" }}>Flight Price: </Text>
+          {item?.flightPrice}
+        </Text>
+        <TouchableOpacity
+          style={{
+            backgroundColor: Colors.green,
+            paddingVertical: 8,
+            paddingHorizontal: 10,
+            borderRadius: 25,
+            marginTop: 10,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+         
+        >
+          <Text
+            style={{
+              color: Colors.white,
+              fontFamily: "outfit",
+              fontSize: 15,
+              fontWeight: "600",
+            }}
+          >
+            Book Now
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
 
   const renderHotelItem = ({ item }) => {
     const renderStars = (rating) => {
